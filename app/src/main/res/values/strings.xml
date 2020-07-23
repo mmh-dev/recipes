@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">recipes</string>
+    <string name="app_name">Meal Recipes</string>
+    <string name="gaspacho_desc">Томатный суп, жгучий и пикантный как сама Испания</string>
+    <string name="pasta_desc">Итальянский рецепт для любителей сыров</string>
+    <string name="chicken_desc">Куринная грудка с яблоками, классический рецепт</string>
+    <string name="lakhmanzhun_desc">Турецкая лепешка с овощным и мясным топпингом</string>
+    <string name="pizza_desc">Классическая пицца для детей с курицей</string>
+    <string name="tiramisu_desc">Итальянский десерт из сыра маскарпоне и печенья савоярди</string>
+    <string name="teriyaki_desc">Курица, обжаренная в японском соусе терияки</string>
+    <string name="kebab_desc">Бараньи котлеты, популярные на Ближнем Востоке></string>
+    <string name="puding_desc">Сладкий пудинг с манной крупой></string>
+    <string name="dolma_desc">Национальное праздничное армянское блюдо></string>
 </resources>
