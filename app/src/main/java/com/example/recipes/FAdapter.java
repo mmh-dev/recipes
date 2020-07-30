@@ -12,45 +12,45 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.Holder> {
+public class FAdapter  extends RecyclerView.Adapter<FAdapter.Holder> {
 
-    List<Recipe> recipeList;
+    List<Recipe> favouritesList;
     Context context;
-    RecycleOnClickListener listener;
+    FavouritesOnClickListener listener;
 
-    public void setOnItemClickListener (RecycleOnClickListener listener){
+    public void setOnItemClickListener (FavouritesOnClickListener listener){
         this.listener = listener;
     }
 
-    public RecipeAdapter(Context context, List<Recipe> recipeList){
+    public FAdapter(Context context, List<Recipe> favouritesList){
+        this.favouritesList = favouritesList;
         this.context = context;
-        this.recipeList = recipeList;
     }
 
     @NonNull
     @Override
-    public RecipeAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item, parent, false);
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.favourites_item, parent, false);
         return new Holder(view, listener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeAdapter.Holder holder, int position) {
-        holder.image.setImageResource(recipeList.get(position).getRecipeImage());
-        holder.name.setText(recipeList.get(position).getRecipeName());
-        holder.desc.setText(recipeList.get(position).getRecipeDesc());
-        holder.cookingTime.setText(recipeList.get(position).getRecipeCookingTime());
-        holder.calories.setText(recipeList.get(position).getRecipeCalories());
+    public void onBindViewHolder(@NonNull Holder holder, int position) {
+        holder.image.setImageResource(favouritesList.get(position).getRecipeImage());
+        holder.name.setText(favouritesList.get(position).getRecipeName());
+        holder.desc.setText(favouritesList.get(position).getRecipeDesc());
+        holder.cookingTime.setText(favouritesList.get(position).getRecipeCookingTime());
+        holder.calories.setText(favouritesList.get(position).getRecipeCalories());
     }
 
     @Override
     public int getItemCount() {
-        return recipeList.size();
+        return favouritesList.size();
     }
 
-    public static class Holder extends RecyclerView.ViewHolder{
+    public static class Holder extends RecyclerView.ViewHolder {
 
-        ImageView image, favouritesIcon;
+        ImageView image, deleteIcon;
         TextView name;
         TextView desc;
         ImageView cookingTimeImage;
@@ -58,8 +58,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.Holder> {
         TextView cookingTime;
         TextView calories;
 
-
-        public Holder(@NonNull View itemView, final RecycleOnClickListener listener) {
+        public Holder(@NonNull View itemView, final FavouritesOnClickListener listener) {
             super(itemView);
 
             image = itemView.findViewById(R.id.recipe_image);
@@ -69,13 +68,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.Holder> {
             caloriesImage = itemView.findViewById(R.id.calories_icon);
             cookingTime = itemView.findViewById(R.id.cookingTime);
             calories = itemView.findViewById(R.id.caloriesValue);
-            favouritesIcon = itemView.findViewById(R.id.favouritesIcon);
+            deleteIcon = itemView.findViewById(R.id.deleteIcon);
 
-            favouritesIcon.setOnClickListener(new View.OnClickListener() {
+            deleteIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    listener.onFavouritesClick(position);
+                    listener.onDeleteClick(getAdapterPosition());
                 }
             });
 
@@ -89,8 +87,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.Holder> {
         }
     }
 
-    public interface RecycleOnClickListener{
+    public interface FavouritesOnClickListener{
         void onItemClick (int position);
-        void onFavouritesClick (int position);
+        void onDeleteClick (int position);
     }
 }
