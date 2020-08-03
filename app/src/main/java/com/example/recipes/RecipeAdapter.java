@@ -4,17 +4,21 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.Holder> {
+public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.Holder> implements Filterable {
 
     List<Recipe> recipeList;
+    List<Recipe> recipeListAll;
     Context context;
     RecycleOnClickListener listener;
 
@@ -25,6 +29,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.Holder> {
     public RecipeAdapter(Context context, List<Recipe> recipeList){
         this.context = context;
         this.recipeList = recipeList;
+        recipeListAll = new ArrayList<>(recipeList);
     }
 
     @NonNull
@@ -47,6 +52,40 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.Holder> {
     public int getItemCount() {
         return recipeList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    private Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Recipe> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0){
+                filteredList.addAll(recipeListAll);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Recipe r: recipeListAll) {
+                    if (r.getRecipeName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(r);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            recipeList.clear();
+            recipeList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public static class Holder extends RecyclerView.ViewHolder{
 
@@ -76,6 +115,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.Holder> {
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     listener.onFavouritesClick(position);
+                    favouritesIcon.setImageResource(R.drawable.ic_baseline_favorite_24);
                 }
             });
 

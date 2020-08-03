@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     List<Recipe> favouritesList = new ArrayList<>();
     ImageView favouritesIcon;
     int count = 0;
+    RecipeAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         recipeList.add(new Recipe(R.drawable.puding, "Манный Пудинг", R.string.puding_desc, "60 мин", "114 Ккал",4, R.string.puding_recipe, R.string.puding_ingredients, R.string.puding_history));
         recipeList.add(new Recipe(R.drawable.dolma, "Долма", R.string.dolma_desc, "90 мин", "206 Ккал",3 , R.string.dolma_recipe, R.string.dolma_ingredients, R.string.dolma_history));
 
-        RecipeAdapter adapter = new RecipeAdapter(this, recipeList);
+        adapter = new RecipeAdapter(this, recipeList);
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -65,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, favouritesList.get(count).getRecipeName() + " added to favourites!", Toast.LENGTH_SHORT).show();
                     count++;
                 }
-//                favouritesIcon.setImageResource(R.drawable.ic_baseline_favorite_24);
-//                favouritesIcon.setColorFilter(R.color.colorPrimary);
             }
         });
 
@@ -85,6 +86,22 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.favourites, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search_icon);
+        SearchView searchView = (SearchView)searchItem.getActionView();  // searchView is now like a normal EditView
+        searchView.setImeOptions(EditorInfo.IME_FLAG_FORCE_ASCII);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                adapter.getFilter().filter(s);
+                return false;
+            }
+        });
         return true;
     }
 
