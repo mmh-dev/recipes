@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
         MenuItem searchItem = menu.findItem(R.id.search_icon);
         SearchView searchView = (SearchView)searchItem.getActionView();  // searchView is now like a normal EditView
-        searchView.setImeOptions(EditorInfo.IME_FLAG_FORCE_ASCII);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
